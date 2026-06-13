@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ALVIS Financial Dashboard</title>
 <link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#fbbf24">
 </head>
 
 <body>
@@ -146,6 +148,15 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-1zv9y6uP31uNQc3bYUj7LjwuSq6cd0YpflkoL3R7vHfIY3Dgf1Htz7qPyRIsHjRVIvSfZxQDM0eN5fa8J4e+9g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="script.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(() => console.log('SW Registered'))
+      .catch(err => console.log(err));
+  });
+}
+</script>
 
 </body>
 </html>
