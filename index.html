@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ALVIS Financial Dashboard</title>
+<title>Finance</title>
 <link rel="stylesheet" href="style.css">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#fbbf24">
@@ -27,9 +27,19 @@
             <input type="text" id="company" value="SEA HOWLKS">
         </div>
 
-        <div class="row">
+        <div class="row phone-row">
             <label>Phone</label>
-            <input type="text" id="phone">
+            <div class="phone-group">
+                <select id="phoneCountry">
+                    <option value="" disabled selected>Select country</option>
+                    <option value="+91">India +91</option>
+                    <option value="+1">USA +1</option>
+                    <option value="+44">UK +44</option>
+                    <option value="+61">Australia +61</option>
+                    <option value="+971">UAE +971</option>
+                </select>
+                <input type="tel" id="phone" maxlength="10" inputmode="numeric" pattern="[0-9]*" placeholder="10 digits only" autocomplete="tel" oninput="this.value=this.value.replace(/\D/g,'').slice(0,10)">
+            </div>
         </div>
 
         <div class="row">
@@ -50,7 +60,7 @@
 
         <div class="row">
             <label>Client Name</label>
-            <input type="text" id="client">
+            <input type="text" id="client" maxlength="60" placeholder="Up to 60 characters">
         </div>
 
         

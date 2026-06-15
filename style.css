@@ -54,15 +54,35 @@ font-weight:600;
 .row input,
 .row select{
 flex:1;
+min-width:0;
 padding:12px;
 border:none;
 border-radius:10px;
 outline:none;
+overflow-x:auto;
+white-space:nowrap;
 }
 
 .input-group{
 display:flex;
 flex:1;
+}
+
+.phone-group{
+display:flex;
+flex:1;
+gap:10px;
+min-width:0;
+}
+
+.phone-group select{
+flex:0 0 120px;
+border-radius:10px;
+}
+
+.phone-group input{
+flex:1;
+min-width:0;
 }
 
 .input-group span{
