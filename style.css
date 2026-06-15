@@ -99,7 +99,33 @@ min-width:0;
 
 .client-input-group select {
     flex: 0 0 180px;
+    padding: 12px;
+    border: 2px solid #94a3b8;
     border-radius: 10px;
+    outline: none;
+    background: white;
+    color: black;
+    font-weight: 500;
+    cursor: pointer;
+    min-height: 46px;
+    font-size: 14px;
+}
+
+.client-input-group select:hover {
+    border-color: #fbbf24;
+    background-color: #f9f5e8;
+}
+
+.client-input-group select:focus {
+    border-color: #fbbf24;
+    box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
+}
+
+.client-input-group select option {
+    padding: 10px;
+    background: white;
+    color: black;
+    min-height: 36px;
 }
 
 .input-group span{

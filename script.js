@@ -30,6 +30,11 @@ function populateClientHistory() {
     const clientHistory = JSON.parse(localStorage.getItem(CLIENT_HISTORY_KEY)) || [];
     const select = document.getElementById('clientHistory');
     
+    if (!select) {
+        console.log('Client history dropdown not found');
+        return;
+    }
+    
     // Clear existing options except the first one
     while (select.options.length > 1) {
         select.remove(1);
