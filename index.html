@@ -16,6 +16,9 @@
     <div class="header">
         <h1>SEA HOWLKS</h1>
         <p>Professional Financial Dashboard</p>
+        <div class="save-status">
+            <span id="saveIndicator" class="save-indicator">✓ Auto-saving enabled</span>
+        </div>
     </div>
 
     <div class="card">
@@ -150,7 +153,13 @@
         Copy Report
     </button>
 
-   
+    <button type="button" onclick="downloadDataAsJSON()" class="btn-secondary">
+        Download Data
+    </button>
+
+    <button type="button" onclick="clearFormData()" class="btn-danger">
+        Clear Saved Data
+    </button>
 
 </div>
 

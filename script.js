@@ -1,6 +1,66 @@
 const currencySymbols = document.querySelectorAll('.currency-symbol');
 const currencySelect = document.getElementById('currency');
 
+// ==================== DATA STORAGE ====================
+const STORAGE_KEY = 'financialDashboardData';
+
+// Function to save all form data to localStorage
+function saveFormData() {
+    const formData = {
+        company: document.getElementById('company').value,
+        phoneCountry: document.getElementById('phoneCountry').value,
+        phone: document.getElementById('phone').value,
+        email: document.getElementById('email').value,
+        generatedBy: document.getElementById('generatedBy').value,
+        client: document.getElementById('client').value,
+        currency: document.getElementById('currency').value,
+        investment: document.getElementById('investment').value,
+        months: document.getElementById('months').value,
+        profitAmount: document.getElementById('profitAmount').value,
+        profitPercent: document.getElementById('profitPercent').value,
+        outstandingAmount: document.getElementById('outstandingAmount').value,
+        outstandingPercent: document.getElementById('outstandingPercent').value,
+        timestamp: new Date().toISOString()
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+}
+
+// Function to load form data from localStorage
+function loadFormData() {
+    const savedData = localStorage.getItem(STORAGE_KEY);
+    if (savedData) {
+        try {
+            const formData = JSON.parse(savedData);
+            document.getElementById('company').value = formData.company || 'SEA HOWLKS';
+            document.getElementById('phoneCountry').value = formData.phoneCountry || '';
+            document.getElementById('phone').value = formData.phone || '';
+            document.getElementById('email').value = formData.email || '';
+            document.getElementById('generatedBy').value = formData.generatedBy || '';
+            document.getElementById('client').value = formData.client || '';
+            document.getElementById('currency').value = formData.currency || '₹';
+            document.getElementById('investment').value = formData.investment || '';
+            document.getElementById('months').value = formData.months || '20 Months';
+            document.getElementById('profitAmount').value = formData.profitAmount || '';
+            document.getElementById('profitPercent').value = formData.profitPercent || '60';
+            document.getElementById('outstandingAmount').value = formData.outstandingAmount || '';
+            document.getElementById('outstandingPercent').value = formData.outstandingPercent || '60';
+            updateCurrencySymbols();
+        } catch (e) {
+            console.log('Error loading saved data:', e);
+        }
+    }
+}
+
+// Function to clear all saved data
+function clearFormData() {
+    if (confirm('Are you sure you want to clear all saved data?')) {
+        localStorage.removeItem(STORAGE_KEY);
+        location.reload();
+    }
+}
+
+// ==================== END DATA STORAGE ====================
+
 // Inputs no longer trigger immediate rendering; results render on submit
 // (button calls `calculateReport()` in the HTML)
 
@@ -51,6 +111,27 @@ if (phoneInput) {
 }
 
 updateCurrencySymbols();
+
+// ==================== AUTO-SAVE EVENT LISTENERS ====================
+// Add change event listeners to all form inputs to auto-save
+const inputElements = [
+    'company', 'phoneCountry', 'phone', 'email', 'generatedBy', 'client',
+    'currency', 'investment', 'months', 'profitAmount', 'profitPercent',
+    'outstandingAmount', 'outstandingPercent'
+];
+
+inputElements.forEach(id => {
+    const element = document.getElementById(id);
+    if (element) {
+        element.addEventListener('change', saveFormData);
+        element.addEventListener('input', saveFormData);
+    }
+});
+
+// Load saved data when page loads
+loadFormData();
+
+// ==================== END EVENT LISTENERS ====================
 
 function calculate(){
 
@@ -181,6 +262,27 @@ function copyReport(){
     }).catch(() => {
         alert('Unable to copy report.');
     });
+}
+
+// Function to download saved data as JSON file
+function downloadDataAsJSON() {
+    const savedData = localStorage.getItem(STORAGE_KEY);
+    if (!savedData) {
+        alert('No saved data to download.');
+        return;
+    }
+    
+    const data = JSON.parse(savedData);
+    const jsonString = JSON.stringify(data, null, 2);
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `financial-data-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
 }
 
 if ("serviceWorker" in navigator) {
