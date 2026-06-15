@@ -3,6 +3,56 @@ const currencySelect = document.getElementById('currency');
 
 // ==================== DATA STORAGE ====================
 const STORAGE_KEY = 'financialDashboardData';
+const CLIENT_HISTORY_KEY = 'clientHistory';
+
+// Function to save client name to history
+function addClientToHistory() {
+    const clientName = document.getElementById('client').value.trim();
+    if (!clientName) return;
+
+    let clientHistory = JSON.parse(localStorage.getItem(CLIENT_HISTORY_KEY)) || [];
+    
+    // Remove if already exists (to avoid duplicates)
+    clientHistory = clientHistory.filter(name => name !== clientName);
+    
+    // Add to beginning of array
+    clientHistory.unshift(clientName);
+    
+    // Keep only last 20 entries
+    clientHistory = clientHistory.slice(0, 20);
+    
+    localStorage.setItem(CLIENT_HISTORY_KEY, JSON.stringify(clientHistory));
+    populateClientHistory();
+}
+
+// Function to populate client history dropdown
+function populateClientHistory() {
+    const clientHistory = JSON.parse(localStorage.getItem(CLIENT_HISTORY_KEY)) || [];
+    const select = document.getElementById('clientHistory');
+    
+    // Clear existing options except the first one
+    while (select.options.length > 1) {
+        select.remove(1);
+    }
+    
+    // Add history items to dropdown
+    clientHistory.forEach(clientName => {
+        const option = document.createElement('option');
+        option.value = clientName;
+        option.textContent = clientName;
+        select.appendChild(option);
+    });
+}
+
+// Function to handle client selection from dropdown
+function selectClientFromHistory() {
+    const select = document.getElementById('clientHistory');
+    if (select.value) {
+        document.getElementById('client').value = select.value;
+        select.value = ''; // Reset dropdown
+        saveFormData();
+    }
+}
 
 // Function to save all form data to localStorage
 function saveFormData() {
@@ -23,6 +73,7 @@ function saveFormData() {
         timestamp: new Date().toISOString()
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+    addClientToHistory();
 }
 
 // Function to load form data from localStorage
@@ -49,12 +100,14 @@ function loadFormData() {
             console.log('Error loading saved data:', e);
         }
     }
+    populateClientHistory();
 }
 
 // Function to clear all saved data
 function clearFormData() {
     if (confirm('Are you sure you want to clear all saved data?')) {
         localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(CLIENT_HISTORY_KEY);
         location.reload();
     }
 }
@@ -127,6 +180,12 @@ inputElements.forEach(id => {
         element.addEventListener('input', saveFormData);
     }
 });
+
+// Add event listener for client history dropdown
+const clientHistorySelect = document.getElementById('clientHistory');
+if (clientHistorySelect) {
+    clientHistorySelect.addEventListener('change', selectClientFromHistory);
+}
 
 // Load saved data when page loads
 loadFormData();

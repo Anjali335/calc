@@ -85,6 +85,23 @@ flex:1;
 min-width:0;
 }
 
+.client-input-group {
+    display: flex;
+    flex: 1;
+    gap: 10px;
+    min-width: 0;
+}
+
+.client-input-group input {
+    flex: 1;
+    min-width: 0;
+}
+
+.client-input-group select {
+    flex: 0 0 180px;
+    border-radius: 10px;
+}
+
 .input-group span{
 width:60px;
 background:#fbbf24;
